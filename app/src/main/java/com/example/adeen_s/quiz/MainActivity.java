@@ -47,7 +47,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        Log.v("ONCREATE", "Inside onCreate()");
+        super.onCreate(null);
         setContentView(R.layout.activity_main);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -102,6 +103,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.clear();
+    }
+
     public void generateQuestion() {
         if (!isTimerRunning) {
             timer.start();
@@ -135,6 +142,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             option3.setTag(op3);
             option4.setText(op4);
             option4.setTag(op4);
+            Log.i("GENERATE QUESTIONS", "Answer == " + answer);
         } else {
             showDialog();
         }
@@ -175,6 +183,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 .setMessage(message)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        getLoaderManager().destroyLoader(0);
                         recreate();
                     }
                 })
